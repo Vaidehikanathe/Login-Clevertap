@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Signup Form</title>
+    <link rel="stylesheet" href="index.css">
+</head>
+<script type="text/javascript" src="https://d2r1yp2w7bby2u.cloudfront.net/js/clevertap.min.js"></script>
+
+    <script type="text/javascript">
+   var clevertap = { event: [], profile: [], account: [], onUserLogin: [], region: 'eu1', notifications: [], privacy: [] };
+   clevertap.account.push({ "id": "Z44-Z4K-K65Z" });
+   clevertap.privacy.push({ optOut: false });
+   clevertap.privacy.push({ useIP: false });
+   
+
+   (function () {
+      var wzrk = document.createElement('script');
+      wzrk.type = 'text/javascript';
+      wzrk.async = true;
+      wzrk.src = ('https:' == document.location.protocol ? 'https://d2r1yp2w7bby2u.cloudfront.net' : 'http://static.clevertap.com') + '/js/clevertap.min.js';
+      var s = document.getElementsByTagName('script')[0];
+      s.parentNode.insertBefore(wzrk, s);
+
+      // Callback function to execute after CleverTap SDK is loaded and initialized
+      wzrk.onload = function () {
+         // Initialize CleverTap
+         console.log("before initialized");
+         clevertap.init('Z44-Z4K-K65Z', 'in1');
+         console.log("CleverTap SDK initialized");
+
+         clevertap.setLogLevel(2);
+         clevertap.setOffline(false);
+
+         // Call getClevertTapID after a delay to ensure CleverTap is fully initialized
+         setTimeout(function () {
+            var cleverTapID = clevertap.getCleverTapID();
+            console.log("CleverTap ID:", cleverTapID);
+         }, 3000); // Adjust the delay as needed
+      };
+   })();
+   
+</script>
+<body>
+    <div class="signup-form">
+        <h2>Signup Form</h2>
+        <form>
+            <div class="form-group">
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Email Address:</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            <div class="form-group">
+                <label for="phone">Phone Number:</label>
+                <input type="tel" id="phone" name="phone" required>
+            </div>
+            <div class="form-group">
+                <label for="dob">Date of Birth:</label>
+                <input type="date" id="dob" name="dob" required>
+            </div>
+            <div class="button-container">
+                <button type="submit" class="login-btn">Login</button>
+                <button type="button" class="profile-btn">Profile</button>
+                <button type="button" class="raise-event-btn">Raise Event</button>
+                <button type="button" class="ask-for-push-btn">Ask For Push</button>
+
+            </div>
+            
+        </form>
+    </div>
+
+</body>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+    const loginBtn = document.querySelector('.login-btn');
+    const profileBtn = document.querySelector('.profile-btn');
+    const raiseEventBtn = document.querySelector('.raise-event-btn');
+    const askForPushBtn = document.querySelector('.ask-for-push-btn');
+    const form = document.getElementById('signup-form');
+
+    loginBtn.addEventListener('click', function(event) {
+        event.preventDefault();
+        const name = document.getElementById('name').value;
+        const email = document.getElementById('email').value;
+        const phone = document.getElementById('phone').value;
+        const dob = new Date(document.getElementById('dob').value);
+
+        clevertap.onUserLogin.push({
+            "Site": {
+                "Name": name,
+                "Email": email,
+                "Phone": phone,
+                "DOB": dob
+            }
+        });
+        console.log('login successful');
+
+    });
+
+    profileBtn.addEventListener('click', function() {
+        const name = document.getElementById('name').value;
+        const email = document.getElementById('email').value;
+        const phone = document.getElementById('phone').value;
+        const dob = new Date(document.getElementById('dob').value);
+
+        clevertap.profile.push({
+            "Site": {
+                "Name": name,
+                "Email": email,
+                "Phone": phone,
+                "DOB": dob
+            }
+        });
+        console.log('Profile successfully pushed.');
+
+    });
+
+    raiseEventBtn.addEventListener('click', function() {
+        clevertap.event.push("Raised Event", {
+            "Property1": "Value1",
+            "Property2": 123,
+            "Property3": 45.67,
+            "Property4": new Date()
+        });
+        console.log('Event successfully pushed to CleverTap.');
+
+    });
+
+    askForPushBtn.addEventListener('click', function() {
+        clevertap.notifications.push({
+            "titleText": 'Would you like to receive Push Notifications?',
+            "bodyText": 'We promise to only send you relevant content and give you updates on your transactions',
+            "okButtonText": 'Sign me up!',
+            "rejectButtonText": 'No thanks',
+            "askAgainTimeInSeconds": 5,
+            "okButtonColor": '#f28046'
+        });
+    });
+});
+
+</script>
+</html>
